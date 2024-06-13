@@ -1,0 +1,35 @@
+{
+    "type": "fluid_sieve:sieve",
+    "pools": [
+      {
+        "rolls": 1,
+        "entries": [
+            {
+                "type": "minecraft:alternatives",
+                "children": [
+                    {
+                        "type": "minecraft:loot_table",
+                        "value": "fluid_sieve:sieve/dense_sieve/water",
+                        "conditions": [
+                            {
+                                "condition": "minecraft:block_state_property",
+                                "block": "fluid_sieve:dense_sieve"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "minecraft:loot_table",
+                        "value": "fluid_sieve:sieve/string_sieve/water",
+                        "conditions": [
+                            {
+                                "condition": "minecraft:block_state_property",
+                                "block": "fluid_sieve:string_sieve"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+      }
+    ]
+  }

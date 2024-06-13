@@ -4,12 +4,14 @@ import net.crioch.fluid_sieve.FluidSieveMod;
 import net.crioch.fluid_sieve.loot.context.FluidSieveLootContextTypes;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.enums.SlabType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.*;
@@ -28,6 +30,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
@@ -71,10 +74,12 @@ public class BaseSieve extends Block implements Waterloggable {
         Identifier id = Registries.FLUID.getId(waterlogged ? Fluids.WATER.getStill() : Fluids.EMPTY);
 
         List<ItemStack> loot = getLoot(id, world, state, pos, random);
-        BlockPos blockPos = pos.down();
-        BlockEntity blockEntity = world.getBlockEntity(blockPos);
 
         if (!loot.isEmpty()) {
+            // Get the block entity below the sieve
+            BlockPos blockPos = pos.down();
+            BlockEntity blockEntity = world.getBlockEntity(blockPos);
+
             if (blockEntity instanceof Inventory inventory) {
                 int inventorySize = inventory.size();
                 boolean inventoryChanged = false;
@@ -113,8 +118,23 @@ public class BaseSieve extends Block implements Waterloggable {
     }
 
     @Override
+    protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        if (this.canPlaceAt(state, world, pos)) {
+            return state;
+        }
+
+        return Blocks.AIR.getDefaultState();
+    }
+
+    @Override
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        BlockPos blockPos = ctx.getBlockPos();
+        FluidState fluidState = ctx.getWorld().getFluidState(blockPos);
+        return this.getDefaultState().with(Properties.WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+    }
+
+    @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-//        builder.add(FluidSieveProperties.FLUIDLOGGED, FluidSieveProperties.FLUID_LEVEL);
         builder.add(Properties.WATERLOGGED);
     }
 
@@ -130,7 +150,7 @@ public class BaseSieve extends Block implements Waterloggable {
     }
 
     private List<ItemStack> getLoot(Identifier fluidId, ServerWorld world, BlockState state, BlockPos pos, Random random) {
-        Identifier path = fluidId.withPrefixedPath(String.format("sieve/%s/", Registries.BLOCK.getId(this).getPath()));
+        Identifier path = fluidId.withPrefixedPath("sieve/");
         RegistryKey<LootTable> key = RegistryKey.of(RegistryKeys.LOOT_TABLE, path);
 
         LootTable lootTable = world.getServer().getReloadableRegistries().getLootTable(key);
@@ -148,8 +168,9 @@ public class BaseSieve extends Block implements Waterloggable {
         // Get all Entities within the sieve
         List<? extends Entity> entitiesWithinBlock = world.getEntitiesByType(TypeFilter.instanceOf(Entity.class), (livingEntity -> livingEntity.getBlockPos().equals(pos)));
 
+        // If any are within it, add a random one as the 'this' entity for the loot table
         if (!entitiesWithinBlock.isEmpty()) {
-            builder.add(LootContextParameters.THIS_ENTITY, entitiesWithinBlock.get(random.nextInt(entitiesWithinBlock.size())));
+            builder.addOptional(LootContextParameters.THIS_ENTITY, entitiesWithinBlock.get(random.nextInt(entitiesWithinBlock.size())));
         }
 
         return lootTable.generateLoot(builder.build(FluidSieveLootContextTypes.FLUID_SIEVE));
