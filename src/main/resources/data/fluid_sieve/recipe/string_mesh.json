@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "id": "fluid_sieve:string_mesh",
+    "count": 1
+  }
+}

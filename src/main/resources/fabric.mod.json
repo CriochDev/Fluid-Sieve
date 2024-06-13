@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "fluid_sieve",
+  "version": "${version}",
+  "name": "Fluid Sieve",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/samjb/Fluid Sieve"
+  },
+  "license": "MIT",
+  "icon": "assets/fluid_sieve/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "net.crioch.fluid_sieve.client.FluidSieveClient"
+    ],
+    "main": [
+      "net.crioch.fluid_sieve.FluidSieveMod"
+    ]
+  },
+  "mixins": [
+    "fluid_sieve.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "1.21-rc.1"
+  }
+}

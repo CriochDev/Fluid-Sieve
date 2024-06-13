@@ -1,0 +1,21 @@
+{
+  "type": "fluid_sieve:sieve",
+  "pools": [
+    {
+      "rolls": {
+        "min": 6,
+        "max": 7
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:stick"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:string"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "type": "fluid_sieve:sieve",
+  "pools": [
+    {
+      "rolls": {
+        "min": 6,
+        "max": 7
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:sand",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:red_sand",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:gravel",
+          "weight": 10
+        }
+      ]
+    }
+  ]
+}
