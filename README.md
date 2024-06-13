@@ -1,5 +1,5 @@
-# Fluid Sieve
-A remake of CheaterCode's [Fluid Sieve](https://github.com/CheaterCodes/FluidSieve) fo Minecraft 1.20.1+.
+# Fluid Sieve: Rewoven
+A remake of CheaterCode's [Fluid Sieve](https://github.com/CheaterCodes/FluidSieve) for Minecraft Fabric 1.21+.
 
 ## Overview
 Introduces two new blocks: String Sieve and Dense String Sieve. These can be placed on top of any solid block, or a hopper, and generates items. Unlike the original mod, the sieves are not block entities and depend on random ticks to generate items.
@@ -24,5 +24,5 @@ The `fluid_sieve:sieve` loot context type has the following parameters available
     - Allows use of the `entity_scores` predicate
 
 ## Roadmap
-- Allow fluids to flow through the block
+- Allow fluids to flow through the block (Waiting for [Towlette](https://github.com/Virtuoel/Towelette) to update to 1.21)
 - Implement a few more sieve types
