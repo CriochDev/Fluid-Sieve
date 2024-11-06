@@ -13,8 +13,8 @@ public class FluidSieveBlocks {
     public static Block DENSE_SIEVE;
 
     public static void register() {
-        STRING_SIEVE = register("string_sieve", new BaseSieve(Block.Settings.copy(Blocks.OAK_PLANKS).pistonBehavior(PistonBehavior.DESTROY)));
-        DENSE_SIEVE = register("dense_sieve", new BaseSieve(Block.Settings.copy(Blocks.OAK_PLANKS).pistonBehavior(PistonBehavior.DESTROY)));
+        STRING_SIEVE = register("string_sieve", new BaseSieve(Block.Settings.copy(Blocks.OAK_PLANKS).pistonBehavior(PistonBehavior.DESTROY), Identifier.of(FluidSieveMod.MOD_ID, "string_sieve")));
+        DENSE_SIEVE = register("dense_sieve", new BaseSieve(Block.Settings.copy(Blocks.OAK_PLANKS).pistonBehavior(PistonBehavior.DESTROY), Identifier.of(FluidSieveMod.MOD_ID, "dense_sieve")));
     }
 
     private static Block register(String path, Block block) {

@@ -1,13 +1,9 @@
 package net.crioch.fluid_sieve.block;
 
-import net.crioch.fluid_sieve.FluidSieveMod;
 import net.crioch.fluid_sieve.loot.context.FluidSieveLootContextTypes;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.enums.SlabType;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
@@ -23,20 +19,18 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypeFilter;
+import net.minecraft.util.context.ContextParameterMap;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.tick.ScheduledTickView;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BaseSieve extends Block implements Waterloggable {
     private static final VoxelShape selectionShape = VoxelShapes.union(
@@ -50,8 +44,8 @@ public class BaseSieve extends Block implements Waterloggable {
             createCuboidShape(15, 1, 1, 16, 14, 16)
     );
 
-    public BaseSieve(Settings settings) {
-        super(settings.ticksRandomly().nonOpaque());
+    public BaseSieve(Settings settings, Identifier key) {
+        super(settings.ticksRandomly().nonOpaque().registryKey(RegistryKey.of(RegistryKeys.BLOCK, key)));
         this.setDefaultState(
                 this.getStateManager()
                         .getDefaultState()
@@ -118,7 +112,7 @@ public class BaseSieve extends Block implements Waterloggable {
     }
 
     @Override
-    protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+    protected BlockState getStateForNeighborUpdate(BlockState state, WorldView world, ScheduledTickView tickView, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, Random random) {
         if (this.canPlaceAt(state, world, pos)) {
             return state;
         }
@@ -160,7 +154,7 @@ public class BaseSieve extends Block implements Waterloggable {
             return List.of();
         }
 
-        LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder(world)
+        ContextParameterMap.Builder builder = new ContextParameterMap.Builder()
                 .add(LootContextParameters.BLOCK_STATE, state)
                 .add(LootContextParameters.ORIGIN, pos.toCenterPos());
 
@@ -170,10 +164,15 @@ public class BaseSieve extends Block implements Waterloggable {
 
         // If any are within it, add a random one as the 'this' entity for the loot table
         if (!entitiesWithinBlock.isEmpty()) {
-            builder.addOptional(LootContextParameters.THIS_ENTITY, entitiesWithinBlock.get(random.nextInt(entitiesWithinBlock.size())));
+
+            builder.addNullable(LootContextParameters.THIS_ENTITY, entitiesWithinBlock.get(random.nextInt(entitiesWithinBlock.size())));
         }
 
-        return lootTable.generateLoot(builder.build(FluidSieveLootContextTypes.FLUID_SIEVE));
+        ContextParameterMap map = builder.build(FluidSieveLootContextTypes.FLUID_SIEVE);
+
+        LootWorldContext context = new LootWorldContext(world, map, null, 0);
+
+        return lootTable.generateLoot(context);
     }
 
     private static void spawnStacksInWorld(ServerWorld world, BlockPos pos, List<ItemStack> stacks) {

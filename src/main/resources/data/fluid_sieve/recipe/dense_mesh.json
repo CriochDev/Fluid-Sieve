@@ -1,13 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "##",
-    "##"
+    "SS",
+    "SS"
   ],
   "key": {
-    "#": {
-      "item": "fluid_sieve:string_mesh"
-    }
+    "S": "fluid_sieve:string_mesh"
   },
   "result": {
     "id": "fluid_sieve:dense_mesh",

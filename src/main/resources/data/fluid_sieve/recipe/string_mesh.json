@@ -1,14 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "###",
-    "###",
-    "###"
+    "SSS",
+    "SSS",
+    "SSS"
   ],
   "key": {
-    "#": {
-      "item": "minecraft:string"
-    }
+    "S": "minecraft:string"
   },
   "result": {
     "id": "fluid_sieve:string_mesh",

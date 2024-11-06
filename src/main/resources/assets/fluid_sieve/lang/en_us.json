@@ -2,5 +2,7 @@
   "block.fluid_sieve.string_sieve": "String Sieve",
   "block.fluid_sieve.dense_sieve": "Dense String Sieve",
   "item.fluid_sieve.string_mesh": "String Mesh",
-  "item.fluid_sieve.dense_mesh": "Dense String Mesh"
+  "item.fluid_sieve.dense_mesh": "Dense String Mesh",
+  "item.fluid_sieve.string_sieve": "String Sieve",
+  "item.fluid_sieve.dense_sieve": "Dense String Sieve"
 }
