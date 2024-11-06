@@ -8,6 +8,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 
 public class FluidSieveItems {
@@ -18,11 +20,11 @@ public class FluidSieveItems {
     public static Item DENSE_MESH;
 
     public static void register() {
-        STRING_SIEVE = register("string_sieve", new BlockItem(FluidSieveBlocks.STRING_SIEVE, new Item.Settings()));
-        DENSE_SIEVE = register("dense_sieve", new BlockItem(FluidSieveBlocks.DENSE_SIEVE, new Item.Settings()));
+        STRING_SIEVE = register("string_sieve", new BlockItem(FluidSieveBlocks.STRING_SIEVE, new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(FluidSieveMod.MOD_ID, "string_sieve")))));
+        DENSE_SIEVE = register("dense_sieve", new BlockItem(FluidSieveBlocks.DENSE_SIEVE, new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(FluidSieveMod.MOD_ID, "dense_sieve")))));
 
-        STRING_MESH = register("string_mesh", new Item(new Item.Settings()));
-        DENSE_MESH = register("dense_mesh", new Item(new Item.Settings()));
+        STRING_MESH = register("string_mesh", new Item(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(FluidSieveMod.MOD_ID, "string_mesh")))));
+        DENSE_MESH = register("dense_mesh", new Item(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(FluidSieveMod.MOD_ID, "dense_mesh")))));
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
             entries.add(STRING_SIEVE);

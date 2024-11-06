@@ -1,17 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "/#/",
-    "# #",
-    "/#/"
+    "/S/",
+    "S S",
+    "/S/"
   ],
   "key": {
-    "#": {
-      "item": "fluid_sieve:dense_mesh"
-    },
-    "/": {
-      "item": "minecraft:stick"
-    }
+    "S": "fluid_sieve:dense_mesh",
+    "/": "minecraft:stick"
   },
   "result": {
     "id": "fluid_sieve:dense_sieve",
