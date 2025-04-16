@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "fluid_sieve:item/dense_mesh"
+  }
+}
